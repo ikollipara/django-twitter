@@ -1,0 +1,17 @@
+<nav>
+    <ul>
+        <li><a href="/">Twitter</a></li>
+    </ul>
+    <ul>
+        <li><a href="">My Feed</a></li>
+        <li><a href="">Tweet</a></li>
+        {% if request.user.is_authenticated %}
+            <li><a href="{% url 'user_detail' request.user.pk %}">My Profile</a></li>
+            <li>
+               <a hx-vals='{"csrfmiddlewaretoken": "{{ csrf_token }}"}' hx-post="{% url 'user_logout' %}">Logout</a>
+            </li>
+        {% else %}
+            <li><a href="{% url 'user_login' %}">Login</a></li>
+        {% endif %}
+    </ul>
+</nav>

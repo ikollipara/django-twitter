@@ -14,6 +14,14 @@ This file contains the forms for the accounts app.
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from .models import User
 
 class UserCreateForm(UserCreationForm):
     image = forms.ImageField(required=False)
+    bio = forms.CharField(required=False, widget=forms.Textarea)
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("_avatar", "bio", "first_name", "last_name", "email")
+        excluded = ("password1","password2")

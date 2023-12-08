@@ -1,8 +1,9 @@
-from django.http import HttpResponseRedirect
+from django.http import QueryDict
 from django.shortcuts import render
 from django.views.generic import CreateView, ListView, DetailView
+from django_htmx.http import HttpResponseClientRedirect
 from .models import User
-from .forms import UserCreateForm
+from .forms import UserCreateForm, UserEditForm
 
 # Create your views here.
 
@@ -43,13 +44,13 @@ class UserEditDetailView(DetailView):
         user: User = self.model.objects.get(pk=self.kwargs["pk"])
         context = super(UserEditDetailView, self).get_context_data(**kwargs)
         context["title"] = f"Twitter - Edit @{user.username}"
-        context["form"] = UserCreateForm(instance=user)
+        context["form"] = UserEditForm(instance=user)
         return context
 
-    def post(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
         user: User = self.model.objects.get(pk=self.kwargs["pk"])
-        form = UserCreateForm(request.POST, request.FILES, instance=user)
+        form = UserEditForm(QueryDict(request.body), request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(f"/accounts/{user.pk}")
-        return render(request, self.template_name, {"form": form})
+            return HttpResponseClientRedirect(f"/accounts/{user.pk}")
+        return render(request, self.template_name, {"form": form, 'object': user})
