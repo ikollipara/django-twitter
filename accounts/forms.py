@@ -13,3 +13,7 @@ This file contains the forms for the accounts app.
 # handle data that needs some level of validation.
 
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+
+class UserCreateForm(UserCreationForm):
+    image = forms.ImageField(required=False)

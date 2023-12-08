@@ -1,0 +1,25 @@
+{% extends 'core/_base.html' %}
+
+{% block content %}
+    <main class="container">
+        <article>
+            <header class="profile-short">
+                <img class="avatar" src="{{object.avatar.url}}" alt="">
+                <span>
+                    <h1 style="margin-bottom: 0;">@{{object.username}}</h1>
+                    <p>{{object.first_name}} {{object.last_name}}</p>
+                </span>
+            </header>
+            <h2>Biography</h2>
+            <p>
+                {{object.bio}}
+            </p>
+            <h2>Recent Tweets</h2>
+            <footer>
+                <a href="{% url 'user_index' %}">Go Back</a>
+                <a href="">See All Tweets</a>
+            </footer>
+        </article>
+
+    </main>
+{% endblock %}

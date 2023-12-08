@@ -4,11 +4,15 @@
     <main class="container">
         <h1>All Users</h1>
         {% for user in object_list %}
-            <article>
-                <a href="{% url 'user_detail' user.pk %}">
-                    <h2>{{ user }}</h2>
-                </a>
-            </article>
+                <article class="profile-short">
+                    <img class="avatar" src="{{ user.avatar.url }}" alt="User Avatar">
+                    <span>
+                        <a href="{% url 'user_detail' user.pk %}">
+                            <h2 style="margin-bottom: 0;" >{{ user }}</h2>
+                        </a>
+                        <p>{{ user.first_name }} {{ user.last_name }}</p>
+                    </span>
+                </article>
         {% endfor %}
     </main>
 {% endblock %}

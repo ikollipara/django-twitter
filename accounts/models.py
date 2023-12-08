@@ -44,6 +44,7 @@ class User(AbstractUser):
     # If you prefer `pass`, that is fine too.
 
     _avatar = models.ImageField(_("Avatar"), upload_to="avatars", blank=True)
+    bio = models.TextField(_("Bio"), blank=True)
 
     REQUIRED_FIELDS = ["email", "first_name", "last_name"]
 
