@@ -1,5 +1,14 @@
-{% extends 'accounts/_base.html' %}
+{% extends 'core/_base.html' %}
 
 {% block content %}
-    <h1>Edit Profile</h1>
+    <main class="container">
+        <a href="{% url 'user_detail' object.pk %}">Go Back...</a>
+        <h1>Edit Profile</h1>
+        <form hx-put="{% url 'user_edit' object.pk %}">
+            {{ form.as_p }}
+            <button x-data="{busy: false}" :aria-busy="busy" :disabled="busy" @htmx:before-request.window="busy = true"  @htmx:after-request.window="busy = false" type="submit">
+                Save
+            </button>
+        </form>
+    </main>
 {% endblock content %}
