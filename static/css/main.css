@@ -1,0 +1,10 @@
+.errorlist {
+    color: red;
+    font-weight: bold;
+    list-style: none;
+}
+
+.helptext {
+    color: dimgray;
+    font-size: 0.75rem;
+}

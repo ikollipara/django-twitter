@@ -1,0 +1,14 @@
+{% extends 'core/_base.html' %}
+
+{% block content %}
+    <main class="container">
+        <h1>All Users</h1>
+        {% for user in object_list %}
+            <article>
+                <a href="{% url 'user_detail' user.pk %}">
+                    <h2>{{ user }}</h2>
+                </a>
+            </article>
+        {% endfor %}
+    </main>
+{% endblock %}

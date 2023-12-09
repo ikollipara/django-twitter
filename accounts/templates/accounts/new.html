@@ -1,0 +1,11 @@
+{% extends 'core/_base.html' %}
+
+{% block content %}
+    <main class="container">
+        <h1>Create a New User</h1>
+        <form hx-boost="true" method="post">
+            {{ form.as_p }}
+            <button type="submit">Sign Up</button>
+        </form>
+    </main>
+{% endblock %}
