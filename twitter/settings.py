@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "accounts",
     "tweets",
-    "chats"
+    "chats",
+    "accounts.accounts_auth"
 ]
 
 MIDDLEWARE = [

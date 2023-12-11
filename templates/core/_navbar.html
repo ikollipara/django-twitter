@@ -1,0 +1,14 @@
+<nav>
+    <ul>
+        <li>Twitter</li>
+    </ul>
+    <ul>
+        <li><a href="">All Tweets</a></li>
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'user_detail' user.pk %}">My Profile</a></li>
+            <li><a hx-post="{% url 'user_logout' %}">Logout</a></li>
+        {% else %}
+            <li><a href="{% url 'user_login' %}">Login</a></li>
+        {% endif %}
+    </ul>
+</nav>
