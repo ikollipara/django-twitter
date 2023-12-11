@@ -13,3 +13,14 @@ This file contains the forms for the accounts app.
 # handle data that needs some level of validation.
 
 from django import forms
+from django.contrib.auth.forms import UserCreationForm as DjangoUserCreationForm
+
+from .models import User
+
+class UserCreationForm(DjangoUserCreationForm):
+   bio = forms.CharField(label="Bio", required=False, widget=forms.Textarea(attrs={"rows": 5}))
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name','last_name','email','bio','_avatar')

@@ -1,7 +1,9 @@
+from django.forms.models import BaseModelForm
+from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView
 from .models import User
-from django.contrib.auth.forms import UserCreationForm
+from .forms import UserUpdateForm, UserCreationForm
 
 # Create your views here.
 
@@ -20,7 +22,7 @@ class UserDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
-        context["title"] = f"Twitter - @{self.model.username}"
+        context["title"] = f"Twitter - @{self.get_object().username}"
         return context
 
 class UserCreateView(CreateView):
@@ -32,3 +34,8 @@ class UserCreateView(CreateView):
         context = super(CreateView, self).get_context_data(**kwargs)
         context["title"] = "Twitter - Create Account"
         return context
+
+class UserUpdateView(UpdateView):
+    model = User
+    template_name = 'accounts/edit.html'
+    form_class =  UserUpdateForm

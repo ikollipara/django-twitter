@@ -1,0 +1,21 @@
+{% extends 'core/_base.html' %}
+
+{% block content %}
+    <main class="container">
+        <div style="display: flex; justify-content: space-between;">
+            <a href="{% url 'user_index' %}">Go Back...</a>
+            {% if request.user.pk == object.pk %}
+                <a href="{% url 'user_update' object.pk %}">Edit</a>
+            {% endif %}
+        </div>
+        {% if request.user.pk == object.pk %}
+            <h1>Your Profile</h1>
+        {% else %}
+            <h1>{{ object.username }}'s Profile</h1>
+        {% endif %}
+        <p>
+            {{ object.bio }}
+        </p>
+       <h2>Recent Tweets</h2>
+    </main>
+{% endblock %}

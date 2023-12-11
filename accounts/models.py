@@ -7,6 +7,7 @@ This file contains the models for the accounts app.
 """
 
 from django.db import models
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 # In Django, there is already a built-in User model,
@@ -44,6 +45,7 @@ class User(AbstractUser):
     # If you prefer `pass`, that is fine too.
 
     _avatar = models.ImageField(_("Avatar"), upload_to="avatars", blank=True)
+    bio = models.TextField(_("Bio"), blank=True)
 
     REQUIRED_FIELDS = ["email", "first_name", "last_name"]
 
@@ -57,3 +59,6 @@ class User(AbstractUser):
     @avatar.setter
     def avatar(self, value):
         self._avatar = value
+
+    def get_absolute_url(self):
+        return reverse_lazy("user_detail", kwargs={"pk": self.pk})
