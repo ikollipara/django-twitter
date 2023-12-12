@@ -1,0 +1,13 @@
+<article>
+    <header>
+        <h2>{{ tweet.user }}</h2>
+        <p>{{ tweet.created_at }}</p>
+    </header>
+    <p>{{ tweet.body }}</p>
+    <footer>
+        <a href="{% url 'tweet_detail' tweet.pk %}">View</a>
+        <button hx-post="{% url 'tweet_like' tweet.pk %}" hx-vals='{"user_id": "{{ user.pk }}"}'>
+            {{ tweet.likes.count }} Likes
+        </button>
+    </footer>
+</article>

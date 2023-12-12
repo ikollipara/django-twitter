@@ -1,0 +1,12 @@
+{% extends 'core/_base.html' %}
+
+{% block content %}
+    <main class="container">
+        <h1>Create Tweet</h1>
+        <form action="{% url 'tweet_create' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Create Tweet</button>
+        </form>
+    </main>
+{% endblock %}

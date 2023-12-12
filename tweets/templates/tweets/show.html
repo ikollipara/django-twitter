@@ -1,0 +1,6 @@
+{% extends 'core/_base.html' %}
+
+{% block content %}
+    <h1>@{{ tweet.author.username }}'s Tweet</h1>
+    {% include 'tweets/_tweet.html' with tweet=object %}
+{% endblock %}

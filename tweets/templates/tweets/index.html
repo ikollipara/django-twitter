@@ -1,0 +1,13 @@
+{% extends 'core/_base.html' %}
+
+{% block content %}
+    <main class="container">
+        <h1>Tweets</h1>
+        <a href="">Create Tweet</a>
+        <div id="tweets">
+            {% for tweet in object_list %}
+                {% include 'tweets/_tweet.html' with tweet=tweet %}
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}

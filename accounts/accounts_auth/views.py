@@ -8,12 +8,15 @@ from accounts.models import User
 
 # Create your views here.
 
+
 class AccountsLoginView(LoginView):
     template_name = "auth/login.html"
     redirect_authenticated_user = True
 
     def get_success_url(self) -> str:
-        return  resolve_url("user_detail", self.request.user.pk)
+        if self.kwargs.get("next"):
+            return self.request.kwargs.get("next")
+        return resolve_url("user_detail", self.request.user.pk)
 
 
 class AccountsLogoutView(LogoutView):
