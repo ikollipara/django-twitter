@@ -1,13 +1,23 @@
 <article>
-    <header>
-        <h2>{{ tweet.user }}</h2>
-        <p>{{ tweet.created_at }}</p>
+    <header style="display: flex; gap: 1em;">
+        <img style="border-radius: 100%; width: 100px; height: 100px;" src="{{ tweet.author.avatar.url }}" alt="Avatar URL">
+        <div>
+            <h2 style="margin-bottom: 0;">{{ tweet.author }}</h2>
+            <p>{{ tweet.created_at }}</p>
+        </div>
     </header>
     <p>{{ tweet.body }}</p>
     <footer>
-        <a href="{% url 'tweet_detail' tweet.pk %}">View</a>
-        <button hx-post="{% url 'tweet_like' tweet.pk %}" hx-vals='{"user_id": "{{ user.pk }}"}'>
-            {{ tweet.likes.count }} Likes
-        </button>
+        <div style="display: inline-flex; gap: 1em;">
+            <a role="button" href="{% url 'tweet_detail' tweet.pk %}">View</a>
+            <form style="margin-bottom: 0;" action="{% url 'tweet_like' tweet.pk %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ user.pk }}">
+                <button style="display: flex; gap: 0.25em; align-items: center; margin-bottom: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    {{ tweet.likes.count }}
+                </button>
+            </form>
+        </div>
     </footer>
 </article>

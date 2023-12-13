@@ -17,5 +17,8 @@
             {{ object.bio }}
         </p>
        <h2>Recent Tweets</h2>
+       {% for tweet in tweets %}
+            {% include 'tweets/_tweet.html' with tweet=tweet %}
+       {% endfor %}
     </main>
 {% endblock %}

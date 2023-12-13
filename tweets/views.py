@@ -1,8 +1,8 @@
 from django.shortcuts import render, resolve_url
-from django.http import HttpResponseRedirect
-from django.views.generic import CreateView, ListView, DetailView, UpdateView, View
+from django.http import HttpResponse, HttpResponseRedirect
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Tweet
+from .models import Tweet, Like
 from accounts.models import User
 from .forms import TweetForm, LikeForm
 
@@ -14,6 +14,11 @@ class TweetListView(LoginRequiredMixin, ListView):
     template_name = "tweets/index.html"
     extra_context = {"title": "Twitter - All Tweets"}
 
+    def get_queryset(self):
+        if (limit := self.kwargs.get("limit")) and limit.isdigit():
+            return Tweet.objects.all().with_likes()[: int(limit)]
+        return Tweet.objects.all().with_likes()
+
 
 class TweetByUserListView(LoginRequiredMixin, ListView):
     model = Tweet
@@ -21,9 +26,9 @@ class TweetByUserListView(LoginRequiredMixin, ListView):
     extra_context = {"title": "Twitter - All Tweets"}
 
     def get_queryset(self):
-        return Tweet.objects.filter(author=self.kwargs["pk"]).order_by("-created_at")[
-            : self.kwargs.get("limit", 10)
-        ]
+        if (limit := self.kwargs.get("limit")) and limit.isdigit():
+            return Tweet.objects.tweets_by(self.kwargs["pk"])[: int(limit)]
+        return Tweet.objects.tweets_by(self.kwargs["pk"])
 
 
 class TweetDetailView(LoginRequiredMixin, DetailView):
@@ -51,19 +56,17 @@ class TweetUpdateView(LoginRequiredMixin, UpdateView):
     extra_context = {"title": "Twitter - Edit Tweet"}
 
 
-class Likes(LoginRequiredMixin, View):
-    http_method_names = ["post"]
+class LikesUpdateView(LoginRequiredMixin, FormView):
+    form_class = LikeForm
 
-    def post(self, request, *args, **kwargs):
-        form = LikeForm(request.POST)
-        if form.is_valid():
-            tweet = Tweet.objects.get(pk=kwargs.pk)
-            user = User.objects.get(pk=form.cleaned_data["user_id"])
-            if tweet.likes.filter(pk=user.pk).exists():
-                tweet.likes.remove(user)
-            else:
-                tweet.likes.add(user)
-                response = HttpResponseRedirect(resolve_url("tweet_detail", tweet.pk))
-                response.status_code = 303
-                response["HX-Refresh"] = True
-                return response
+    def form_valid(self, form: LikeForm) -> HttpResponse:
+        tweet = Tweet.objects.get(pk=self.kwargs["pk"])
+        user = User.objects.get(pk=form.cleaned_data["user_id"])
+        if (like := tweet.likes.filter(user=user)).exists():
+            like.delete()
+        else:
+            like = Like(tweet=tweet, user=user)
+            like.save()
+        response = HttpResponseRedirect(resolve_url("tweet_detail", pk=tweet.pk))
+        response.status_code = 303
+        return response

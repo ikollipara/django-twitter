@@ -8,5 +8,5 @@ urlpatterns = [
     path("tweets/<int:pk>/", views.TweetDetailView.as_view(), name="tweet_detail"),
     path("tweets/<int:pk>/edit", views.TweetUpdateView.as_view(), name="tweet_update"),
     path("<int:pk>/tweets/", views.TweetByUserListView.as_view(), name="tweet_by_user"),
-    path("tweets/<int:pk>/likes", views.Likes.as_view(), name="tweet_like"),
+    path("tweets/<int:pk>/likes", views.LikesUpdateView.as_view(), name="tweet_like"),
 ]

@@ -26,6 +26,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
         context["title"] = f"Twitter - @{self.get_object().username}"
+        context["tweets"] = self.get_object().tweets.order_by("-created_at").all()[:10]
         return context
 
 

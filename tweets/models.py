@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from .managers import TweetManager
 
 # Create your models here.
 
@@ -14,6 +15,9 @@ class Tweet(models.Model):
         on_delete=models.CASCADE,
         related_name="tweets",
     )
+    created_at = models.DateTimeField(_("Created at"), auto_now_add=True)
+
+    objects = TweetManager()
 
     class Meta:
         """Meta definition for Tweet."""
@@ -46,6 +50,10 @@ class Like(models.Model):
 
         verbose_name = _("Like")
         verbose_name_plural = _("Likes")
+
+        constraints = [
+            models.UniqueConstraint(fields=["tweet", "user"], name="unique_tweet_like")
+        ]
 
     def __str__(self):
         return f"{self.objects.count()} for {self.tweet}"
