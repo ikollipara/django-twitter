@@ -2,8 +2,9 @@
 
 {% block content %}
     <main class="container">
+        <a href="{% url 'tweets:index' %}">Go Back...</a>
         <h1>Create Tweet</h1>
-        <form action="{% url 'tweet_create' %}" method="post">
+        <form action="{% url 'tweets:create' %}" method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Create Tweet</button>

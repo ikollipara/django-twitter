@@ -1,6 +1,9 @@
 {% extends 'core/_base.html' %}
 
 {% block content %}
-    <h1>@{{ tweet.author.username }}'s Tweet</h1>
-    {% include 'tweets/_tweet.html' with tweet=object %}
+    <main class="container">
+        <a href="{% url 'tweets:index' %}">Go Back...</a>
+        <h1>@{{ tweet.author.username }}'s Tweet</h1>
+        {% include 'tweets/_tweet.html' with tweet=object is_liked=object.is_liked %}
+    </main>
 {% endblock %}

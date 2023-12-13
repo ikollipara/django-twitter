@@ -3,10 +3,10 @@
 {% block content %}
     <main class="container-fluid">
         <h1>Tweets</h1>
-        <a href="">Create Tweet</a>
+        <a href="{% url 'tweets:create' %}">Create Tweet</a>
         <div id="tweets">
             {% for tweet in object_list %}
-                {% include 'tweets/_tweet.html' with tweet=tweet %}
+                {% include 'tweets/_tweet.html' with tweet=tweet is_liked=tweet.is_liked %}
             {% endfor %}
         </div>
     </main>

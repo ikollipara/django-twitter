@@ -28,6 +28,9 @@ class Tweet(models.Model):
     def __str__(self):
         return f"{self.author} - {self.body}"
 
+    def liked_by(self, user):
+        return self.likes.filter(user=user).exists()
+
 
 class Like(models.Model):
     """Model definition for Like."""

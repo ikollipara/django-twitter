@@ -3,9 +3,9 @@
 {% block content %}
     <main class="container">
         <div style="display: flex; justify-content: space-between;">
-            <a href="{% url 'user_index' %}">Go Back...</a>
+            <a href="{% url 'accounts:index' %}">Go Back...</a>
             {% if request.user.pk == object.pk %}
-                <a href="{% url 'user_update' object.pk %}">Edit</a>
+                <a hx-target="#modal" href="{% url 'accounts:update' object.pk %}">Edit</a>
             {% endif %}
         </div>
         {% if request.user.pk == object.pk %}
@@ -18,7 +18,8 @@
         </p>
        <h2>Recent Tweets</h2>
        {% for tweet in tweets %}
-            {% include 'tweets/_tweet.html' with tweet=tweet %}
+            {% include 'tweets/_tweet.html' with tweet=tweet is_liked=tweet.is_liked %}
        {% endfor %}
+        <div id="modal"></div>
     </main>
 {% endblock %}

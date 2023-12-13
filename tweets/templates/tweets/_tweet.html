@@ -1,4 +1,4 @@
-<article>
+<article style="view-transition-name: tweet-{{ tweet.pk }}">
     <header style="display: flex; gap: 1em;">
         <img style="border-radius: 100%; width: 100px; height: 100px;" src="{{ tweet.author.avatar.url }}" alt="Avatar URL">
         <div>
@@ -9,13 +9,17 @@
     <p>{{ tweet.body }}</p>
     <footer>
         <div style="display: inline-flex; gap: 1em;">
-            <a role="button" href="{% url 'tweet_detail' tweet.pk %}">View</a>
-            <form style="margin-bottom: 0;" action="{% url 'tweet_like' tweet.pk %}" method="post">
+            <a role="button" href="{% url 'tweets:detail' tweet.pk %}">View</a>
+            <form @submit="setTimeout(() => { busy = true }, 200)" x-data='{ busy: false }'  id="like" style="margin-bottom: 0;" action="{% url 'tweets:like' tweet.pk %}" method="post" hx-select="#like" hx-post="{% url 'tweets:like' tweet.pk %}" hx-swap="outerHTML">
                 {% csrf_token %}
                 <input type="hidden" name="user_id" value="{{ user.pk }}">
-                <button style="display: flex; gap: 0.25em; align-items: center; margin-bottom: 0;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-                    {{ tweet.likes.count }}
+                <button :aria-busy="busy" style="display: flex; gap: 0.25em; align-items: center; margin-bottom: 0;">
+                    {% if is_liked %}
+                        <svg :hidden="busy" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    {% else %}
+                        <svg :hidden="busy" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    {% endif %}
+                    <span :hidden="busy">{{ tweet.likes.count }}</span>
                 </button>
             </form>
         </div>
